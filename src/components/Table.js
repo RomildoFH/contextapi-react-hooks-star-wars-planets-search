@@ -5,7 +5,7 @@ function Table() {
   const { data, isLoading, setLoading } = useContext(AppContext);
   useEffect(() => {
     setLoading(false);
-  }, []);
+  }, [setLoading]);
   return (
     <table>
       <thead>

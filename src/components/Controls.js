@@ -1,18 +1,12 @@
-import React, { useState, useContext } from 'react';
+// import React, { useState, useContext } from 'react';
+import React from 'react';
 
 function Controls() {
-  // const [inputs, setInputs] = useState({
-  //   name: '',
-  //   coluna: '',
-  //   operador: '',
-  //   quantity: '',
-  // });
-
   return (
     <form>
       <div>
         <h2>Nome do Planeta</h2>
-        <input type="text" name="name" />
+        <input type="text" name="name" data-testid="name-filter" />
       </div>
       <div>
         <label htmlFor="column-filter">
