@@ -1,12 +1,36 @@
 // import React, { useState, useContext } from 'react';
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import AppContext from '../context/AppContext';
 
 function Controls() {
+  const
+    {
+      data,
+      isLoading,
+      setLoading,
+      nameFilter,
+      setNameFilter,
+    } = useContext(AppContext);
+
+  const handleChange = ({ target }) => {
+    const { name } = target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+
+    if (name === 'name') {
+      setNameFilter(value);
+    }
+  };
+
   return (
     <form>
       <div>
         <h2>Nome do Planeta</h2>
-        <input type="text" name="name" data-testid="name-filter" />
+        <input
+          type="text"
+          name="name"
+          data-testid="name-filter"
+          onChange={ handleChange }
+        />
       </div>
       <div>
         <label htmlFor="column-filter">

@@ -6,6 +6,7 @@ import AppContext from './AppContext';
 export default function AppProvider({ children }) {
   const [data, setData] = useState({ results: [] });
   const [isLoading, setLoading] = useState(true);
+  const [nameFilter, setNameFilter] = useState('');
 
   useEffect(() => {
     planetsAPI().then((result) => setData(result));
@@ -15,7 +16,9 @@ export default function AppProvider({ children }) {
     data,
     isLoading,
     setLoading,
-  }), [data, isLoading]);
+    nameFilter,
+    setNameFilter,
+  }), [data, isLoading, nameFilter]);
 
   return (
     <AppContext.Provider value={ values }>

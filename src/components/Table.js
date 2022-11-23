@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import AppContext from '../context/AppContext';
 
 function Table() {
-  const { data, isLoading, setLoading } = useContext(AppContext);
+  const { data, isLoading, setLoading, nameFilter } = useContext(AppContext);
   useEffect(() => {
     setLoading(false);
   }, [setLoading]);
@@ -28,8 +28,15 @@ function Table() {
       <tbody>
         {
           isLoading === false
-            ? data.results.map((planeta) => (
+            ? data.results.filter((planeta) => (
+              planeta.name.toLowerCase().includes(nameFilter.toLowerCase())
+            )).map((planeta) => (
               <tr key={ planeta.name }>
+                {/* {
+                  Object.keys(planeta).map((prop) => (
+                    <td key={ `${planeta.name}-${prop}` }>{ `${planeta[prop]}` }</td>
+                  ))
+                } */}
                 <td>{ planeta.name }</td>
                 <td>{ planeta.rotation_period }</td>
                 <td>{ planeta.orbital_period }</td>
