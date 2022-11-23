@@ -1,14 +1,14 @@
 // import React, { useState, useContext } from 'react';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 function Controls() {
   const
     {
-      data,
-      isLoading,
-      setLoading,
-      nameFilter,
+      // data,
+      // isLoading,
+      // setLoading,
+      // nameFilter,
       setNameFilter,
     } = useContext(AppContext);
 
