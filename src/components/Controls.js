@@ -8,15 +8,9 @@ function Controls() {
   const [quantidade, setQuantidade] = useState('0');
   const
     {
-      // data,
-      // isLoading,
-      // setLoading,
-      // nameFilter,
       setNameFilter,
       filterByNumericValues,
       setfilterByNumericValues,
-      // filteringNumeric,
-      setFilteringNumeric,
     } = useContext(AppContext);
 
   const handleChange = ({ target }) => {
@@ -42,41 +36,15 @@ function Controls() {
     }
   };
 
-  // const initialFiltering = [{
-  //   column: 'population',
-  //   operador: 'maior que',
-  //   quantidade: 0,
-  // }];
-
   const handleClick = ({ target }) => {
     const { name } = target;
     switch (name) {
     case 'btn-filter':
-      console.log('clicou filtrar');
-      // console.log(filterByNumericValues[0] === initialFiltering[0]);
-      // if (filterByNumericValues[0] === initialFiltering[0]) {
-      //   setfilterByNumericValues([{
-      //     column,
-      //     operador,
-      //     quantidade,
-      //   }]);
-      // } else {
-      //   setfilterByNumericValues([...filterByNumericValues, {
-      //     column,
-      //     operador,
-      //     quantidade,
-      //   }]);
-      // }
-      setfilterByNumericValues([{
+      setfilterByNumericValues([...filterByNumericValues, {
         column,
         operador,
         quantidade,
       }]);
-      if (filterByNumericValues.length >= 1) {
-        setFilteringNumeric(true);
-      } else {
-        setFilteringNumeric(false);
-      }
       break;
     default:
       console.log('não achei o botão');

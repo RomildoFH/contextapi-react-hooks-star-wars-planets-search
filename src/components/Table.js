@@ -8,8 +8,6 @@ function Table() {
     setLoading,
     nameFilter,
     filterByNumericValues,
-    filteringNumeric,
-    // setFilteringNumeric
   } = useContext(AppContext);
 
   const [planetas, setPlanetas] = useState([]);
@@ -19,37 +17,23 @@ function Table() {
   }, [setLoading]);
 
   const filterCombine = () => {
-    if (filterByNumericValues[0].operador === 'maior que') {
-      const newArray = planetas
-        .filter((planeta) => (
-          filterByNumericValues.length >= 1
-            ? Number(planeta[filterByNumericValues[0].column])
-            > Number(filterByNumericValues[0].quantidade)
-            : null
-        ));
-      setPlanetas(newArray);
-      console.log(typeof (filterByNumericValues[0].quantidade));
-    } else if (filterByNumericValues[0].operador === 'menor que') {
-      const newArray = planetas
-        .filter((planeta) => (
-          filterByNumericValues.length >= 1
-            ? Number(planeta[filterByNumericValues[0].column])
-            < Number(filterByNumericValues[0].quantidade)
-            : planeta
-        ));
-      setPlanetas(newArray);
-    } else if (filterByNumericValues[0].operador === 'igual a') {
-      const newArray = planetas
-        .filter((planeta) => (
-          filterByNumericValues.length >= 1
-            ? Number(planeta[filterByNumericValues[0].column])
-            === Number(filterByNumericValues[0].quantidade)
-            : planeta
-        ));
-      setPlanetas(newArray);
-    } else {
-      setPlanetas(data.results);
-    }
+    const newArray = planetas
+      .filter((planeta) => {
+        const test = filterByNumericValues.every((filter) => {
+          switch (filter.operador) {
+          case 'maior que':
+            return Number(planeta[filter.column]) > Number(filter.quantidade);
+          case 'menor que':
+            return Number(planeta[filter.column]) < Number(filter.quantidade);
+          case 'igual a':
+            return Number(planeta[filter.column]) === Number(filter.quantidade);
+          default:
+            return false;
+          }
+        });
+        return test;
+      });
+    setPlanetas(newArray);
   };
 
   useEffect(() => {
@@ -58,10 +42,8 @@ function Table() {
 
   useEffect(() => {
     filterCombine();
-  }, [filteringNumeric]);
+  }, [filterByNumericValues]);
 
-  // console.log(filterByNumericValues[0].column);
-  // console.log(filterByNumericValues[0].quantidade);
   return (
     <table>
       <thead>
@@ -88,19 +70,8 @@ function Table() {
               .filter((planeta) => (
                 planeta.name.toLowerCase().includes(nameFilter.toLowerCase())
               ))
-              // .filter((planeta) => (
-              //   filterByNumericValues.length >= 1
-              //     ? planeta[filterByNumericValues[0].column]
-              //     > filterByNumericValues[0].quantidade
-              //     : planeta
-              // ))
               .map((planeta) => (
                 <tr key={ planeta.name }>
-                  {/* {
-                    Object.keys(planeta).map((prop) => (
-                      <td key={ `${planeta.name}-${prop}` }>{ `${planeta[prop]}` }</td>
-                    ))
-                  } */}
                   <td>{ planeta.name }</td>
                   <td>{ planeta.rotation_period }</td>
                   <td>{ planeta.orbital_period }</td>

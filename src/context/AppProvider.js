@@ -7,12 +7,7 @@ export default function AppProvider({ children }) {
   const [data, setData] = useState({ results: [] });
   const [isLoading, setLoading] = useState(true);
   const [nameFilter, setNameFilter] = useState('');
-  const [filteringNumeric, setFilteringNumeric] = useState(false);
-  const [filterByNumericValues, setfilterByNumericValues] = useState([{
-    column: 'population',
-    operador: 'maior que',
-    quantidade: 0,
-  }]);
+  const [filterByNumericValues, setfilterByNumericValues] = useState([]);
 
   useEffect(() => {
     planetsAPI().then((result) => setData(result));
@@ -26,9 +21,7 @@ export default function AppProvider({ children }) {
     setNameFilter,
     filterByNumericValues,
     setfilterByNumericValues,
-    filteringNumeric,
-    setFilteringNumeric,
-  }), [data, isLoading, nameFilter, filterByNumericValues, filteringNumeric]);
+  }), [data, isLoading, nameFilter, filterByNumericValues]);
 
   return (
     <AppContext.Provider value={ values }>
