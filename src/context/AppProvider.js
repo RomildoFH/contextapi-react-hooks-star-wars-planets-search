@@ -8,6 +8,13 @@ export default function AppProvider({ children }) {
   const [isLoading, setLoading] = useState(true);
   const [nameFilter, setNameFilter] = useState('');
   const [filterByNumericValues, setfilterByNumericValues] = useState([]);
+  const [columnOptions, setColumnOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   useEffect(() => {
     planetsAPI().then((result) => setData(result));
@@ -21,7 +28,9 @@ export default function AppProvider({ children }) {
     setNameFilter,
     filterByNumericValues,
     setfilterByNumericValues,
-  }), [data, isLoading, nameFilter, filterByNumericValues]);
+    columnOptions,
+    setColumnOptions,
+  }), [data, isLoading, nameFilter, filterByNumericValues, columnOptions]);
 
   return (
     <AppContext.Provider value={ values }>

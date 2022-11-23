@@ -1,16 +1,19 @@
 // import React, { useState, useContext } from 'react';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function Controls() {
   const [column, setColumn] = useState('population');
   const [operador, setOperador] = useState('maior que');
   const [quantidade, setQuantidade] = useState('0');
+  const [savedFilters, setSavedFilters] = useState([]);
   const
     {
       setNameFilter,
       filterByNumericValues,
       setfilterByNumericValues,
+      columnOptions,
+      setColumnOptions,
     } = useContext(AppContext);
 
   const handleChange = ({ target }) => {
@@ -36,10 +39,20 @@ function Controls() {
     }
   };
 
+  useEffect(() => {
+    filterByNumericValues.forEach((filter) => {
+      setSavedFilters([...savedFilters, filter.column]);
+    });
+  }, [filterByNumericValues, savedFilters]);
+
   const handleClick = ({ target }) => {
     const { name } = target;
     switch (name) {
     case 'btn-filter':
+      setColumnOptions(columnOptions.filter((columnName) => (
+        columnName !== column
+      )));
+      setColumn(columnOptions[0]);
       setfilterByNumericValues([...filterByNumericValues, {
         column,
         operador,
@@ -73,11 +86,16 @@ function Controls() {
             onChange={ handleChange }
             value={ column }
           >
-            <option value="population">population</option>
+            {
+              columnOptions.map((columnName) => (
+                <option key={ columnName } value={ columnName }>{ columnName }</option>
+              ))
+            }
+            {/* <option value="population">population</option>
             <option value="orbital_period">orbital_period</option>
             <option value="diameter">diameter</option>
             <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            <option value="surface_water">surface_water</option> */}
           </select>
         </label>
         <label htmlFor="select-operador">
