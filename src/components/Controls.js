@@ -1,8 +1,11 @@
 // import React, { useState, useContext } from 'react';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function Controls() {
+  const [column, setColumn] = useState('population');
+  const [operador, setOperador] = useState('maior que');
+  const [quantidade, setQuantidade] = useState('0');
   const
     {
       // data,
@@ -10,14 +13,74 @@ function Controls() {
       // setLoading,
       // nameFilter,
       setNameFilter,
+      filterByNumericValues,
+      setfilterByNumericValues,
+      // filteringNumeric,
+      setFilteringNumeric,
     } = useContext(AppContext);
 
   const handleChange = ({ target }) => {
     const { name } = target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
 
-    if (name === 'name') {
+    switch (name) {
+    case 'name':
       setNameFilter(value);
+      break;
+    case 'column':
+      setColumn(value);
+      break;
+    case 'operador':
+      setOperador(value);
+      break;
+    case 'quantidade':
+      setQuantidade(value);
+      break;
+    default:
+      console.log('algo errado não está certo');
+      break;
+    }
+  };
+
+  // const initialFiltering = [{
+  //   column: 'population',
+  //   operador: 'maior que',
+  //   quantidade: 0,
+  // }];
+
+  const handleClick = ({ target }) => {
+    const { name } = target;
+    switch (name) {
+    case 'btn-filter':
+      console.log('clicou filtrar');
+      // console.log(filterByNumericValues[0] === initialFiltering[0]);
+      // if (filterByNumericValues[0] === initialFiltering[0]) {
+      //   setfilterByNumericValues([{
+      //     column,
+      //     operador,
+      //     quantidade,
+      //   }]);
+      // } else {
+      //   setfilterByNumericValues([...filterByNumericValues, {
+      //     column,
+      //     operador,
+      //     quantidade,
+      //   }]);
+      // }
+      setfilterByNumericValues([{
+        column,
+        operador,
+        quantidade,
+      }]);
+      if (filterByNumericValues.length >= 1) {
+        setFilteringNumeric(true);
+      } else {
+        setFilteringNumeric(false);
+      }
+      break;
+    default:
+      console.log('não achei o botão');
+      break;
     }
   };
 
@@ -35,27 +98,54 @@ function Controls() {
       <div>
         <label htmlFor="column-filter">
           Coluna
-          <select id="column-filter">
-            <option>population</option>
-            <option>orbital_period</option>
-            <option>diameter</option>
-            <option>rotation_period</option>
-            <option>surface_water</option>
+          <select
+            id="column-filter"
+            data-testid="column-filter"
+            name="column"
+            onChange={ handleChange }
+            value={ column }
+          >
+            <option value="population">population</option>
+            <option value="orbital_period">orbital_period</option>
+            <option value="diameter">diameter</option>
+            <option value="rotation_period">rotation_period</option>
+            <option value="surface_water">surface_water</option>
           </select>
         </label>
         <label htmlFor="select-operador">
           Operador
-          <select id="select-operador">
-            <option>maior que</option>
-            <option>menor que</option>
-            <option>igual a</option>
+          <select
+            id="select-operador"
+            data-testid="comparison-filter"
+            onChange={ handleChange }
+            name="operador"
+            value={ operador }
+          >
+            <option value="maior que">maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a">igual a</option>
           </select>
         </label>
         <label htmlFor="input-quantidade">
           Quantidade
-          <input name="quantidade" id="input-quantidade" type="number" />
+          <input
+            name="quantidade"
+            id="input-quantidade"
+            type="number"
+            value={ quantidade }
+            onChange={ handleChange }
+            data-testid="value-filter"
+          />
         </label>
-        <button type="button" id="btn-filtrar">Filtrar</button>
+        <button
+          type="button"
+          id="btn-filtrar"
+          data-testid="button-filter"
+          name="btn-filter"
+          onClick={ handleClick }
+        >
+          Filtrar
+        </button>
       </div>
       <div>
         <label htmlFor="order-column">
