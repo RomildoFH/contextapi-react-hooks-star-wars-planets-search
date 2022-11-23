@@ -42,8 +42,9 @@ function Controls() {
   useEffect(() => {
     filterByNumericValues.forEach((filter) => {
       setSavedFilters([...savedFilters, filter.column]);
+      console.log('teste é loop');
     });
-  }, [filterByNumericValues, savedFilters]);
+  }, [filterByNumericValues]);
 
   const handleClick = ({ target }) => {
     const { name } = target;
