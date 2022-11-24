@@ -15,6 +15,8 @@ export default function AppProvider({ children }) {
     'rotation_period',
     'surface_water',
   ]);
+  const [order, setOrder] = useState();
+  const [sorting, setSorting] = useState(false);
 
   useEffect(() => {
     planetsAPI().then((result) => setData(result));
@@ -30,7 +32,19 @@ export default function AppProvider({ children }) {
     setfilterByNumericValues,
     columnOptions,
     setColumnOptions,
-  }), [data, isLoading, nameFilter, filterByNumericValues, columnOptions]);
+    order,
+    setOrder,
+    sorting,
+    setSorting,
+  }), [
+    data,
+    isLoading,
+    nameFilter,
+    filterByNumericValues,
+    columnOptions,
+    order,
+    sorting,
+  ]);
 
   return (
     <AppContext.Provider value={ values }>

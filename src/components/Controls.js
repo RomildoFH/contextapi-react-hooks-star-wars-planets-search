@@ -6,6 +6,8 @@ function Controls() {
   const [column, setColumn] = useState('population');
   const [operador, setOperador] = useState('maior que');
   const [quantidade, setQuantidade] = useState('0');
+  const [columnOrder, setColumnOrder] = useState('population');
+  const [directOrder, setDirectOrder] = useState('');
   const
     {
       setNameFilter,
@@ -13,6 +15,8 @@ function Controls() {
       setfilterByNumericValues,
       columnOptions,
       setColumnOptions,
+      setOrder,
+      setSorting,
     } = useContext(AppContext);
 
   const handleChange = ({ target }) => {
@@ -31,6 +35,12 @@ function Controls() {
       break;
     case 'quantidade':
       setQuantidade(value);
+      break;
+    case 'directOrder':
+      setDirectOrder(value);
+      break;
+    case 'columnOrder':
+      setColumnOrder(value);
       break;
     default:
       console.log('algo errado não está certo');
@@ -52,6 +62,13 @@ function Controls() {
         quantidade,
       }]);
       break;
+    case 'btn-ordenar':
+      setOrder({
+        column: columnOrder,
+        sort: directOrder,
+      });
+      setSorting(true);
+      break;
     default:
       console.log('não achei o botão');
       break;
@@ -59,7 +76,7 @@ function Controls() {
   };
 
   return (
-    <form>
+    <form data-testid="form-control">
       <div>
         <h2>Nome do Planeta</h2>
         <input
@@ -67,6 +84,7 @@ function Controls() {
           name="name"
           data-testid="name-filter"
           onChange={ handleChange }
+          placeholder="Nome de um planeta"
         />
       </div>
       <div>
@@ -81,7 +99,13 @@ function Controls() {
           >
             {
               columnOptions.map((columnName) => (
-                <option key={ columnName } value={ columnName }>{ columnName }</option>
+                <option
+                  key={ columnName }
+                  value={ columnName }
+                  data-testId="column-filter-options"
+                >
+                  { columnName }
+                </option>
               ))
             }
           </select>
@@ -95,9 +119,9 @@ function Controls() {
             name="operador"
             value={ operador }
           >
-            <option value="maior que">maior que</option>
-            <option value="menor que">menor que</option>
-            <option value="igual a">igual a</option>
+            <option value="maior que" data-testId="comparison-options">maior que</option>
+            <option value="menor que" data-testId="comparison-options">menor que</option>
+            <option value="igual a" data-testId="comparison-options">igual a</option>
           </select>
         </label>
         <label htmlFor="input-quantidade">
@@ -124,23 +148,71 @@ function Controls() {
       <div>
         <label htmlFor="order-column">
           Ordenar
-          <select id="order-column">
-            <option>population</option>
-            <option>orbital_period</option>
-            <option>diameter</option>
-            <option>rotation_period</option>
-            <option>surface_water</option>
+          <select
+            id="order-column"
+            data-testid="column-sort"
+            value={ columnOrder }
+            onChange={ handleChange }
+            name="columnOrder"
+          >
+            <option
+              value="population"
+              data-testId="column-order-options"
+            >
+              population
+            </option>
+            <option
+              value="orbital_period"
+              data-testId="column-order-options"
+            >
+              orbital_period
+            </option>
+            <option value="diameter" data-testId="column-order-options">diameter</option>
+            <option
+              value="ratation_period"
+              data-testId="column-order-options"
+            >
+              rotation_period
+            </option>
+            <option
+              value="surface_water"
+              data-testId="column-order-options"
+            >
+              surface_water
+            </option>
           </select>
         </label>
         <label htmlFor="orderdenar-ascendente">
-          <input type="radio" id="orderdenar-ascendente" />
+          <input
+            type="radio"
+            id="orderdenar-ascendente"
+            data-testid="column-sort-input-asc"
+            value="ASC"
+            name="directOrder"
+            onChange={ handleChange }
+          />
           Ascendente
         </label>
         <label htmlFor="orderdenar-descendente">
-          <input type="radio" id="orderdenar-descendente" />
+          <input
+            type="radio"
+            id="orderdenar-descendente"
+            data-testid="column-sort-input-desc"
+            value="DESC"
+            name="directOrder"
+            onChange={ handleChange }
+          />
           Descendente
         </label>
-        <button type="button" id="btn-ordenar">Ordenar</button>
+        <button
+          type="button"
+          id="btn-ordenar"
+          data-testid="column-sort-button"
+          name="btn-ordenar"
+          onClick={ handleClick }
+        >
+          Ordenar
+        </button>
       </div>
     </form>
   );
