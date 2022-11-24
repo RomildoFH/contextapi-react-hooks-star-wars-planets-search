@@ -1,12 +1,11 @@
 // import React, { useState, useContext } from 'react';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from '../context/AppContext';
 
 function Controls() {
   const [column, setColumn] = useState('population');
   const [operador, setOperador] = useState('maior que');
   const [quantidade, setQuantidade] = useState('0');
-  const [savedFilters, setSavedFilters] = useState([]);
   const
     {
       setNameFilter,
@@ -38,13 +37,6 @@ function Controls() {
       break;
     }
   };
-
-  useEffect(() => {
-    filterByNumericValues.forEach((filter) => {
-      setSavedFilters([...savedFilters, filter.column]);
-      console.log('teste é loop');
-    });
-  }, [filterByNumericValues]);
 
   const handleClick = ({ target }) => {
     const { name } = target;
@@ -92,11 +84,6 @@ function Controls() {
                 <option key={ columnName } value={ columnName }>{ columnName }</option>
               ))
             }
-            {/* <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option> */}
           </select>
         </label>
         <label htmlFor="select-operador">

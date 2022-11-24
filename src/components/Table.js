@@ -8,6 +8,9 @@ function Table() {
     setLoading,
     nameFilter,
     filterByNumericValues,
+    setfilterByNumericValues,
+    columnOptions,
+    setColumnOptions,
   } = useContext(AppContext);
 
   const [planetas, setPlanetas] = useState([]);
@@ -17,7 +20,7 @@ function Table() {
   }, [setLoading]);
 
   const filterCombine = () => {
-    const newArray = planetas
+    const newArray = data.results
       .filter((planeta) => {
         const test = filterByNumericValues.every((filter) => {
           switch (filter.operador) {
@@ -44,6 +47,30 @@ function Table() {
     filterCombine();
   }, [filterByNumericValues]);
 
+  const removeFilter = (columnName) => {
+    const newFilterArray = filterByNumericValues.filter((filter) => (
+      filter.column !== columnName
+    ));
+    setfilterByNumericValues(newFilterArray);
+    const newOptions = columnOptions;
+    // console.log(newOptions);
+    newOptions.push(columnName);
+    // console.log(newOptions);
+    setColumnOptions(newOptions);
+  };
+
+  const removeAllFilters = () => {
+    const newFilterArray = [];
+    setfilterByNumericValues(newFilterArray);
+    setColumnOptions([
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ]);
+  };
+
   return (
     <div>
       <ul>
@@ -51,12 +78,30 @@ function Table() {
           filterByNumericValues.map((filter) => (
             <li
               key={ filter.column }
+              data-testid="filter"
             >
               { `${filter.column} ${filter.operador} ${filter.quantidade}` }
               {' '}
-              <button type="button">X</button>
+              <button
+                type="button"
+                onClick={ () => removeFilter(filter.column) }
+              >
+                X
+              </button>
             </li>
           ))
+        }
+        {
+          filterByNumericValues.length >= 1
+          && (
+            <button
+              type="button"
+              data-testid="button-remove-filters"
+              onClick={ () => removeAllFilters() }
+            >
+              Remover todas filtragens
+            </button>
+          )
         }
       </ul>
       <table>
