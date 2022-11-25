@@ -167,9 +167,13 @@ describe('Testa a página de Home', () => {
 
     userEvent.click(deletFilter)
 
-    waitFor(() => {
-      expect(filterList).not.toBeInTheDocument();
-    })
+    const filterList2 = screen.queryByTestId('filter')
+    expect(filterList2).toBe(null)
+
+    // waitFor(() => {
+    //   expect(filterList).not.toBeInTheDocument();
+    // })
+    // await waitForElementToBeRemoved(filterList);
     
     const columnFilterOptions3 = screen.getAllByTestId('column-filter-options');  
     expect(columnFilterOptions3.length).toBe(5)
@@ -234,9 +238,7 @@ describe('Testa a página de Home', () => {
     expect(rows4.length).toBe(3)
   });
 
-  it('Quando houver fala ao realizar a requisição, emite um erro', async () => {
-
-    jest.resetAllMocks();
+  it('Avalia se ao selecionar as opções de ordenação a tabela renderiza conforme coluna e direção escolhida', async () => {
 
     render(
       <AppProvider>
@@ -244,6 +246,34 @@ describe('Testa a página de Home', () => {
       </AppProvider>
     );
 
+    const column = screen.getByLabelText('Ordenar');
+    const asc = screen.getByLabelText('Ascendente');
+    const desc = screen.getByLabelText('Descendente');
+    const btnOrder = screen.getByRole('button', { name: 'Ordenar' })
+    const cells = await screen.findAllByRole('cell');
+    expect(column).toBeInTheDocument();
+    expect(column.value).toBe('population');
+    expect(asc).toBeInTheDocument();
+    expect(asc).not.toBeChecked();
+    expect(desc).toBeInTheDocument();
+    expect(desc).not.toBeChecked();
+    expect(btnOrder).toBeInTheDocument();
+    expect(cells[0]).toHaveTextContent('Tatooine')
+    expect(cells[13]).toHaveTextContent('Alderaan')
+    userEvent.click(asc);
+    userEvent.click(btnOrder);
 
+    const loading = screen.getByText('Carregando...');
+    expect(loading).toBeInTheDocument();
+
+    waitFor(() => {
+      expect(loading).not.toBeInTheDocument();
+    })
+    
+    const cells2 = await screen.findAllByRole('cell');
+    expect(cells2[0]).toHaveTextContent('Yavin IV');
+    expect(cells2[13]).toHaveTextContent('Tatooine');
+    expect(cells2[117]).toHaveTextContent('Dagobah');
+    expect(cells2[125]).toHaveTextContent('unknown');
   });
 })
