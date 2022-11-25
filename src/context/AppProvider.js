@@ -15,7 +15,7 @@ export default function AppProvider({ children }) {
     'rotation_period',
     'surface_water',
   ]);
-  const [order, setOrder] = useState();
+  const [order, setOrder] = useState({});
   const [sorting, setSorting] = useState(false);
 
   useEffect(() => {

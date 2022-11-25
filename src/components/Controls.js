@@ -17,6 +17,7 @@ function Controls() {
       setColumnOptions,
       setOrder,
       setSorting,
+      setLoading,
     } = useContext(AppContext);
 
   const handleChange = ({ target }) => {
@@ -43,7 +44,7 @@ function Controls() {
       setColumnOrder(value);
       break;
     default:
-      console.log('algo errado não está certo');
+      // console.log('algo errado não está certo');
       break;
     }
   };
@@ -67,6 +68,7 @@ function Controls() {
         column: columnOrder,
         sort: directOrder,
       });
+      setLoading(true);
       setSorting(true);
       break;
     default:
@@ -102,7 +104,7 @@ function Controls() {
                 <option
                   key={ columnName }
                   value={ columnName }
-                  data-testId="column-filter-options"
+                  data-testid="column-filter-options"
                 >
                   { columnName }
                 </option>
@@ -119,9 +121,9 @@ function Controls() {
             name="operador"
             value={ operador }
           >
-            <option value="maior que" data-testId="comparison-options">maior que</option>
-            <option value="menor que" data-testId="comparison-options">menor que</option>
-            <option value="igual a" data-testId="comparison-options">igual a</option>
+            <option value="maior que" data-testid="comparison-options">maior que</option>
+            <option value="menor que" data-testid="comparison-options">menor que</option>
+            <option value="igual a" data-testid="comparison-options">igual a</option>
           </select>
         </label>
         <label htmlFor="input-quantidade">
@@ -157,26 +159,26 @@ function Controls() {
           >
             <option
               value="population"
-              data-testId="column-order-options"
+              data-testid="column-order-options"
             >
               population
             </option>
             <option
               value="orbital_period"
-              data-testId="column-order-options"
+              data-testid="column-order-options"
             >
               orbital_period
             </option>
-            <option value="diameter" data-testId="column-order-options">diameter</option>
+            <option value="diameter" data-testid="column-order-options">diameter</option>
             <option
               value="ratation_period"
-              data-testId="column-order-options"
+              data-testid="column-order-options"
             >
               rotation_period
             </option>
             <option
               value="surface_water"
-              data-testId="column-order-options"
+              data-testid="column-order-options"
             >
               surface_water
             </option>

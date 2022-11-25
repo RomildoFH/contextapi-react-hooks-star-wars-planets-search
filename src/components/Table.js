@@ -18,10 +18,9 @@ function Table() {
   const [planetas, setPlanetas] = useState([]);
 
   useEffect(() => {
-    // console.log(isLoading);
     setTimeout(() => {
       setLoading(false);
-    }, '0');
+    }, '500');
   }, [data]);
 
   const filterCombine = () => {
@@ -52,23 +51,49 @@ function Table() {
     filterCombine();
   }, [filterByNumericValues]);
 
-  useEffect(() => {
+  // As funções de ordenação foram adaptadas da fonte:
+  // https://stackoverflow.com/a/42677265/20007602
+  const sortAscendingElements = (array) => (array.reduce((arr, record) => {
+    const index = (record[order.column].match(/[a-z]/i)) ? 1 : 0;
+    arr[index].push(record);
+    return arr;
+  }, [[], []])
+    .map((arr) => arr.sort((a, b) => a[order.column] - b[order.column]))
+    .reduce((curr, next) => curr.concat(next)));
+
+  const sortDescendingElements = (array) => (array.reduce((arr, recorde) => {
+    const index = (recorde[order.column].match(/[a-z]/i)) ? 1 : 0;
+    arr[index].push(recorde);
+    return arr;
+  }, [[], []])
+    .map((arr) => arr.sort((a, b) => b[order.column] - a[order.column]))
+    .reduce((curr, next) => curr.concat(next)));
+
+  const orderPlanetas = () => {
     const newArray = planetas;
     if (sorting) {
       switch (order.sort) {
       case 'ASC':
-        newArray.sort((a, b) => a[order.column] - b[order.column]);
+        setPlanetas(sortAscendingElements(newArray));
         break;
       case 'DESC':
-        newArray.sort((a, b) => b[order.column] - a[order.column]);
+        newArray.sort();
+        setPlanetas(sortDescendingElements(newArray));
         break;
       default:
         alert('Selecione a ordenação');
         break;
       }
     }
-    setPlanetas(newArray);
-  }, [order]);
+    setTimeout(() => {
+      setLoading(false);
+    }, '500');
+    // setPlanetas(newArray);
+  };
+
+  useEffect(() => {
+    orderPlanetas();
+  }, [order, sorting]);
 
   const removeFilter = (columnName) => {
     const newFilterArray = filterByNumericValues.filter((filter) => (
@@ -76,9 +101,7 @@ function Table() {
     ));
     setfilterByNumericValues(newFilterArray);
     const newOptions = columnOptions;
-    // console.log(newOptions);
     newOptions.push(columnName);
-    // console.log(newOptions);
     setColumnOptions(newOptions);
   };
 
@@ -149,36 +172,32 @@ function Table() {
             </thead>
             <tbody>
               {
-                isLoading === false
-                  ? planetas
-                    .filter((planeta) => (
-                      planeta.name.toLowerCase().includes(nameFilter.toLowerCase())
-                    ))
-                    .map((planeta) => (
-                      <tr key={ planeta.name }>
-                        <td data-testid="planet-name">{ planeta.name }</td>
-                        <td>{ planeta.rotation_period }</td>
-                        <td>{ planeta.orbital_period }</td>
-                        <td>{ planeta.diameter }</td>
-                        <td>{ planeta.climate }</td>
-                        <td>{ planeta.gravity }</td>
-                        <td>{ planeta.terrain }</td>
-                        <td>{ planeta.surface_water }</td>
-                        <td>{ planeta.population }</td>
-                        <td>{ planeta.films }</td>
-                        <td>{ planeta.created }</td>
-                        <td>{ planeta.edited }</td>
-                        <td>{ planeta.url }</td>
-                      </tr>
-                    ))
-                  : null
+                planetas
+                  .filter((planeta) => (
+                    planeta.name.toLowerCase().includes(nameFilter.toLowerCase())
+                  ))
+                  .map((planeta) => (
+                    <tr key={ planeta.name }>
+                      <td data-testid="planet-name">{ planeta.name }</td>
+                      <td>{ planeta.rotation_period }</td>
+                      <td>{ planeta.orbital_period }</td>
+                      <td>{ planeta.diameter }</td>
+                      <td>{ planeta.climate }</td>
+                      <td>{ planeta.gravity }</td>
+                      <td>{ planeta.terrain }</td>
+                      <td>{ planeta.surface_water }</td>
+                      <td>{ planeta.population }</td>
+                      <td>{ planeta.films }</td>
+                      <td>{ planeta.created }</td>
+                      <td>{ planeta.edited }</td>
+                      <td>{ planeta.url }</td>
+                    </tr>
+                  ))
               }
             </tbody>
           </table>
-
         )
       }
-
     </div>
   );
 }

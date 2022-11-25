@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import App from '../App';
 import mockData from './mockData';
 import AppContext from '../context/AppContext';
@@ -65,6 +65,7 @@ describe('Testa a página de Home', () => {
     expect(inputDescending).toBeInTheDocument();
     expect(btnOrder).toBeInTheDocument();
   });
+
   it('Testa ao carregar a página o texto Carregando... é renderizado e desaparece após consultar a API', async () => {
     render(
       <AppProvider>
@@ -166,15 +167,83 @@ describe('Testa a página de Home', () => {
 
     userEvent.click(deletFilter)
 
-    // const filterList2 = screen.getAllByTestId('filter')
-    // expect(filterList2.length).toBe(0);
-
-    // expect(filterList).not.toBeInTheDocument();
-
+    waitFor(() => {
+      expect(filterList).not.toBeInTheDocument();
+    })
+    
     const columnFilterOptions3 = screen.getAllByTestId('column-filter-options');  
     expect(columnFilterOptions3.length).toBe(5)
+    
+    const rows3 = screen.getAllByRole('row');
+    expect(rows3.length).toBe(11)
+  });
+
+  it('Testa diferentes combinações de filtros', async () => {
+    render(
+      <AppProvider>
+       <App />
+      </AppProvider>
+    );
+    const inputName = screen.getByPlaceholderText('Nome de um planeta');
+    const inputColumn = screen.getByLabelText('Coluna');
+    const inputOperator = screen.getByLabelText('Operador');
+    const inputQuantity = screen.getByLabelText('Quantidade');
+    const btnFilter = screen.getByRole('button', { name: 'Filtrar' });
+    const rows = await screen.findAllByRole('row');
+    expect(rows.length).toBe(11)
+    
+    userEvent.selectOptions(inputColumn, ['orbital_period']);
+    expect(inputColumn.value).toBe('orbital_period');
+
+    userEvent.selectOptions(inputOperator, ['igual a']);
+    expect(inputOperator.value).toBe('igual a');
+
+    userEvent.clear(inputQuantity);
+    userEvent.type(inputQuantity, '4818');
+    expect(inputQuantity.value).toBe('4818');
+
+    userEvent.click(btnFilter);
+    
+    const rows2 = screen.getAllByRole('row');
+    expect(rows2.length).toBe(2)
+
+    const removeAllFilters = screen.getByTestId('button-remove-filters');
+    expect(removeAllFilters).toBeInTheDocument();
+    userEvent.click(removeAllFilters);
+
+    waitFor(() => {
+      expect(removeAllFilters).not.toBeInTheDocument();
+    })
 
     const rows3 = screen.getAllByRole('row');
     expect(rows3.length).toBe(11)
+
+    userEvent.selectOptions(inputColumn, ['diameter']);
+    expect(inputColumn.value).toBe('diameter');
+
+    userEvent.selectOptions(inputOperator, ['menor que']);
+    expect(inputOperator.value).toBe('menor que');
+
+    userEvent.clear(inputQuantity);
+    userEvent.type(inputQuantity, '8000');
+    expect(inputQuantity.value).toBe('8000');
+
+    userEvent.click(btnFilter);
+
+    const rows4 = screen.getAllByRole('row');
+    expect(rows4.length).toBe(3)
+  });
+
+  it('Quando houver fala ao realizar a requisição, emite um erro', async () => {
+
+    jest.resetAllMocks();
+
+    render(
+      <AppProvider>
+       <App />
+      </AppProvider>
+    );
+
+
   });
 })
