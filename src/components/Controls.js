@@ -22,7 +22,7 @@ function Controls() {
 
   const handleChange = ({ target }) => {
     const { name } = target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const { value } = target;
 
     switch (name) {
     case 'name':
@@ -40,11 +40,11 @@ function Controls() {
     case 'directOrder':
       setDirectOrder(value);
       break;
-    case 'columnOrder':
+    // case 'columnOrder':
+    //   setColumnOrder(value);
+    //   break;
+    default: // esse default substitui o order-column
       setColumnOrder(value);
-      break;
-    default:
-      // console.log('algo errado não está certo');
       break;
     }
   };
@@ -63,7 +63,7 @@ function Controls() {
         quantidade,
       }]);
       break;
-    case 'btn-ordenar':
+    default: // esse default substitui o btn-order
       setOrder({
         column: columnOrder,
         sort: directOrder,
@@ -71,9 +71,9 @@ function Controls() {
       setLoading(true);
       setSorting(true);
       break;
-    default:
-      console.log('não achei o botão');
-      break;
+    // default:
+    //   console.log('não achei o botão');
+    //   break;
     }
   };
 

@@ -251,6 +251,12 @@ describe('Testa a página de Home', () => {
     const desc = screen.getByLabelText('Descendente');
     const btnOrder = screen.getByRole('button', { name: 'Ordenar' })
     const cells = await screen.findAllByRole('cell');
+
+    jest.resetAllMocks();
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+    userEvent.click(btnOrder);
+    expect(window.alert).toBeCalledWith('Selecione a ordenação');
+
     expect(column).toBeInTheDocument();
     expect(column.value).toBe('population');
     expect(asc).toBeInTheDocument();
@@ -275,5 +281,15 @@ describe('Testa a página de Home', () => {
     expect(cells2[13]).toHaveTextContent('Tatooine');
     expect(cells2[117]).toHaveTextContent('Dagobah');
     expect(cells2[125]).toHaveTextContent('unknown');
+
+    userEvent.selectOptions(column, ['diameter']);
+    userEvent.click(desc);
+    userEvent.click(btnOrder);
+
+    const cells3 = await screen.findAllByRole('cell');
+    expect(cells3[0]).toHaveTextContent('Bespin');
+    expect(cells3[13]).toHaveTextContent('Kamino');
+    expect(cells3[117]).toHaveTextContent('Endor');
+
   });
 })
