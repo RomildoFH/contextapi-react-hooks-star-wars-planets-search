@@ -79,9 +79,10 @@ function Controls() {
 
   return (
     <form data-testid="form-control">
-      <div>
-        <h2>Nome do Planeta</h2>
+      <div className="inputs-control">
+        {/* <h2>Nome do Planeta</h2> */}
         <input
+          className="main-input"
           type="text"
           name="name"
           data-testid="name-filter"
@@ -89,7 +90,7 @@ function Controls() {
           placeholder="Nome de um planeta"
         />
       </div>
-      <div>
+      <div className="inputs-control">
         <label htmlFor="column-filter">
           Coluna
           <select
@@ -147,7 +148,7 @@ function Controls() {
           Filtrar
         </button>
       </div>
-      <div>
+      <div className="inputs-control">
         <label htmlFor="order-column">
           Ordenar
           <select
@@ -184,28 +185,30 @@ function Controls() {
             </option>
           </select>
         </label>
-        <label htmlFor="orderdenar-ascendente">
-          <input
-            type="radio"
-            id="orderdenar-ascendente"
-            data-testid="column-sort-input-asc"
-            value="ASC"
-            name="directOrder"
-            onChange={ handleChange }
-          />
-          Ascendente
-        </label>
-        <label htmlFor="orderdenar-descendente">
-          <input
-            type="radio"
-            id="orderdenar-descendente"
-            data-testid="column-sort-input-desc"
-            value="DESC"
-            name="directOrder"
-            onChange={ handleChange }
-          />
-          Descendente
-        </label>
+        <div className="direction-container">
+          <label htmlFor="orderdenar-ascendente">
+            <input
+              type="radio"
+              id="orderdenar-ascendente"
+              data-testid="column-sort-input-asc"
+              value="ASC"
+              name="directOrder"
+              onChange={ handleChange }
+            />
+            Ascendente
+          </label>
+          <label htmlFor="orderdenar-descendente">
+            <input
+              type="radio"
+              id="orderdenar-descendente"
+              data-testid="column-sort-input-desc"
+              value="DESC"
+              name="directOrder"
+              onChange={ handleChange }
+            />
+            Descendente
+          </label>
+        </div>
         <button
           type="button"
           id="btn-ordenar"

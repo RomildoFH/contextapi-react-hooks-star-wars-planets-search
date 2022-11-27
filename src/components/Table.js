@@ -118,7 +118,7 @@ function Table() {
   };
 
   return (
-    <div>
+    <div className="exter-container">
       <ul>
         {
           filterByNumericValues.map((filter) => (
@@ -152,50 +152,53 @@ function Table() {
       </ul>
       {
         isLoading ? <p>Carregando...</p> : (
-          <table>
-            <thead>
-              <tr>
-                <th>name</th>
-                <th>Rotation Period</th>
-                <th>Orbital Period</th>
-                <th>diameter</th>
-                <th>climate</th>
-                <th>gravity</th>
-                <th>terrain</th>
-                <th>Surface Water</th>
-                <th>population</th>
-                <th>films</th>
-                <th>created</th>
-                <th>edited</th>
-                <th>url</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                planetas
-                  .filter((planeta) => (
-                    planeta.name.toLowerCase().includes(nameFilter.toLowerCase())
-                  ))
-                  .map((planeta) => (
-                    <tr key={ planeta.name }>
-                      <td data-testid="planet-name">{ planeta.name }</td>
-                      <td>{ planeta.rotation_period }</td>
-                      <td>{ planeta.orbital_period }</td>
-                      <td>{ planeta.diameter }</td>
-                      <td>{ planeta.climate }</td>
-                      <td>{ planeta.gravity }</td>
-                      <td>{ planeta.terrain }</td>
-                      <td>{ planeta.surface_water }</td>
-                      <td>{ planeta.population }</td>
-                      <td>{ planeta.films }</td>
-                      <td>{ planeta.created }</td>
-                      <td>{ planeta.edited }</td>
-                      <td>{ planeta.url }</td>
-                    </tr>
-                  ))
-              }
-            </tbody>
-          </table>
+          <div className="data-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>name</th>
+                  <th>Rotation Period</th>
+                  <th>Orbital Period</th>
+                  <th>diameter</th>
+                  <th>climate</th>
+                  <th>gravity</th>
+                  <th>terrain</th>
+                  <th>Surface Water</th>
+                  <th>population</th>
+                  <th>films</th>
+                  <th>created</th>
+                  <th>edited</th>
+                  <th>url</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  planetas
+                    .filter((planeta) => (
+                      planeta.name.toLowerCase().includes(nameFilter.toLowerCase())
+                    ))
+                    .map((planeta) => (
+                      <tr key={ planeta.name }>
+                        <td data-testid="planet-name">{ planeta.name }</td>
+                        <td>{ planeta.rotation_period }</td>
+                        <td>{ planeta.orbital_period }</td>
+                        <td>{ planeta.diameter }</td>
+                        <td>{ planeta.climate }</td>
+                        <td>{ planeta.gravity }</td>
+                        <td>{ planeta.terrain }</td>
+                        <td>{ planeta.surface_water }</td>
+                        <td>{ planeta.population }</td>
+                        <td>{ planeta.films }</td>
+                        <td>{ planeta.created }</td>
+                        <td>{ planeta.edited }</td>
+                        <td>{ planeta.url }</td>
+                      </tr>
+                    ))
+                }
+              </tbody>
+            </table>
+
+          </div>
         )
       }
     </div>
